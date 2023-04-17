@@ -7,42 +7,115 @@ const { NotImplementedError } = require('../extensions/index.js');
 * using Node from extensions
 */
 class BinarySearchTree {
-
+  constructor() {
+    this._root = null;
+  }
   root() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    return this._root;
   }
 
-  add(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  add(data) {
+    if (this._root) {
+      let isAdded = false;
+      let current = this._root;
+      while (!isAdded) {
+        if (current.data < data) {
+          if (!current.right) {
+            current.right = {
+              data,
+              left: null,
+              right: null
+            }
+            isAdded = true;
+          } else {
+            current = current.right;
+          }
+        } else {
+          if (!current.left) {
+            current.left = {
+              data,
+              left: null,
+              right: null
+            }
+            isAdded = true;
+          } else {
+            current = current.left;
+          }
+        }
+      }
+        
+    } else {
+      this._root = {
+        data,
+        left: null,
+        right: null
+      }
+    }
+  }
+// has(data)— возвращает true, 
+// если узел с таким dataсуществует в дереве и false в противном случае
+  has(data) {
+    if (!this._root) {
+      return false;
+    }
+      let current = this._root;
+        while (current) {
+          if (current.data > data) {
+            current = current.left;
+          } else if (current.data < data) {
+            current = current.right;
+          } else if (current.data === data) {
+            return true;
+          }           
+        }
+        return false;
   }
 
-  has(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
-  }
+// возвращает узел с узлом data if с существующим в дереве и в противном случае data null
 
-  find(/* data */) {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+  find(data) {
+    let current = this._root;
+      while (current) {
+        if (current.data > data) {
+          current = current.left;
+        } else if (current.data < data) {
+          current = current.right;
+        } else if (current.data === data) {
+          return current;         
+        }
+      }
+      return null;
   }
-
   remove(/* data */) {
     throw new NotImplementedError('Not implemented');
     // remove line with error and write your code here
   }
 
   min() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+    if (!this._root && this._root !== undefined) {
+      return null;
+    }
+      let current = this._root;
+        while (current.left) {
+          if (current.left) {
+            current = current.left;
+          }
+        }
+        return current.data;
   }
-
   max() {
-    throw new NotImplementedError('Not implemented');
-    // remove line with error and write your code here
+
+    if (!this._root) {
+      return null;
+    }
+      let current = this._root;
+        while (current.right) {
+          current = current.right;
+        }
+    return current.data;
   }
 }
+
 
 module.exports = {
   BinarySearchTree
