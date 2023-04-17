@@ -86,24 +86,42 @@ class BinarySearchTree {
       }
       return null;
   }
+
+  addRemovedNodes(parentNode) {
+    if (parentNode) {
+      this.add(parentNode.data);
+      if (parentNode.left) {
+        this.addRemovedNodes(parentNode.left);
+      } 
+      if (parentNode.right) {
+        this.addRemovedNodes(parentNode.right);
+      }
+    }
+  } 
+
   remove(data) {
     let current = this._root;
+    let parentNode = current;
       while (current) {
         if (current.data > data) {
-          if (current.left.data === data) {
-            current.left = null;
-            break;
-          }
+          parentNode = current;
           current = current.left;
         } else if (current.data < data) {
-          if (current.right.data === data) {
-            current.right = null;
-            break;
-          }
+          parentNode = current;
           current = current.right;
-        }
+        } else if (current.data === data) {
+          if (parentNode?.left?.data === data) {
+            parentNode.left = null;
+            this.addRemovedNodes(current?.left);
+            this.addRemovedNodes(current?.right);
+          } else if (parentNode?.right?.data === data) {
+            parentNode.right = null;
+            this.addRemovedNodes(current?.left);
+            this.addRemovedNodes(current?.right);
+          }
+          break;
+        } 
       }
-      return this._root;
   }
 
   min() {
@@ -130,6 +148,19 @@ class BinarySearchTree {
     return current.data;
   }
 }
+
+const tree = new BinarySearchTree();
+tree.add(9);
+tree.add(14);
+tree.add(54);
+tree.add(2);
+tree.add(6);
+tree.add(8);
+tree.add(31);
+tree.add(1);
+tree.remove(6);
+tree.remove(2);
+console.log(tree.has(9));
 
 
 module.exports = {
